@@ -1,16 +1,30 @@
-# Welcome to your Expo app 👋
+# App Name - My Task
+### Author: Mohit Sharma
+## 📱 Description
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The **Todo Reminder App** is a simple yet powerful task manager built with **React Native** using the latest **Expo Router** architecture.
+
+- Add tasks with ease
+- Swipe to delete
+- Tap to mark as done
+- Automatically sort pending tasks above completed ones
+- Set **daily reminders** with Expo Notifications to never miss a task
+
+---
 
 ## Get started
+1. Copy Repo
+   ```bash
+   git clone  https://github.com/moohhiit/My-Task.git
+   ```
 
-1. Install dependencies
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
    npx expo start
@@ -23,28 +37,27 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## 💡 Challenges & Design Choices
 
-When you're ready, run:
+### 🧱 1. Expo Router Learning Curve  
+Adopting the new **Expo Router (app directory structure)** required rethinking the navigation flow. Unlike traditional React Navigation, screens and modals are automatically registered based on the file system. We had to carefully place files like `_layout.js`, `index.js`, and `modal.js` to ensure the stack and modals behaved correctly.
 
-```bash
-npm run reset-project
-```
+### 🎯 2. Swipe-to-Delete with Gesture Handler  
+Implementing swipe-to-delete using `react-native-gesture-handler` caused an error (`PanGestureHandler must be a descendant of GestureHandlerRootView`). This required wrapping the entire app in `GestureHandlerRootView`, which was tricky to integrate with the Expo Router layout.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 🧼 3. Floating Add Button with Scroll Animation  
+We wanted the Add button (FAB) to hide on scroll down and reappear on scroll up for a cleaner UI. This required using the `Animated` API with scroll interpolation and absolutely positioning the button without taking up layout space.
 
-## Learn more
+### 🔔 4. Platform-Specific Notification Behavior  
+Expo Notifications work differently on Android and iOS. For example, `trigger: { seconds: 10, repeats: true }` works on Android but **not on iOS**. To achieve reliable daily reminders on both platforms, we had to switch to `trigger: { hour, minute, repeats: true }`, which ensures notifications fire every day at a set time.
 
-To learn more about developing your project with Expo, look at the following resources:
+### 💾 5. Keeping the UI Minimal  
+We chose to use simple components like `TouchableOpacity` and native `Text` to maintain performance and readability instead of bringing in heavy UI libraries.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
 
-Join our community of developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
