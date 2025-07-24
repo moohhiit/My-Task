@@ -7,10 +7,8 @@ import { useTask } from '../Context/TaskContext';
 export default function ModalScreen() {
     const router = useRouter();
     const [input, setinput] = useState('');
-    const [discription, setDiscription] = useState('')
-    const [error, setError] = useState(null)
     const [enableReminder, setenableReminder] = useState(false)
-    const [renmindertime, seremindertime] = useState(10)
+    const [renmindertime, seremindertime] = useState(600)
 
     const { settasks, tasks } = useTask()
 
@@ -22,12 +20,13 @@ export default function ModalScreen() {
                 body: taskText,
             },
             trigger: {
-                hour: 11,
-                minute: 45,
+                second: renmindertime,
                 repeats: true,
             },
         });
     }
+
+
     useEffect(() => {
         const subscription = Notifications.addNotificationReceivedListener(notification => {
             console.log("NOTIFICATION RECEIVED:", notification);
@@ -41,13 +40,14 @@ export default function ModalScreen() {
         const newtask = {
             id: Date.now().toString(),
             text: input,
-            dis: discription,
             done: false,
         };
         settasks([newtask, ...tasks]);
         setinput('');
-        scheduleTaskReminder(newtask.text)
-        console.log(newtask)
+        if (enableReminder) {
+
+            scheduleTaskReminder(newtask.text)
+        }
         router.back();
     };
 
@@ -78,8 +78,9 @@ export default function ModalScreen() {
                     <TextInput
                         value={renmindertime}
                         onChangeText={seremindertime}
-                        placeholder="Enter Reminder Time (Default 10 min )"
+                        placeholder="Enter Reminder Time (Default 600 sec Means 10 min )"
                         style={styles.input}
+                        inputMode='numeric'
                     />
 
                 </View> : null
